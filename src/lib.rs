@@ -1,4 +1,5 @@
 use colored::*;
+use shellexpand;
 use std::fs;
 use std::fs::OpenOptions;
 use std::io::prelude::Read;
@@ -55,19 +56,20 @@ pub struct Todo {
 
 impl Todo {
     pub fn new() -> Result<Self, String> {
-        let todo_path: String = match env::var("TODO_PATH") {
+        let mut todo_path: String = match env::var("TODO_PATH") {
             Ok(t) => t,
             Err(_) => {
-                let home = env::var("HOME").unwrap();
+                let path = ".";
 
                 // Look for a legacy TODO file path
-                let legacy_todo = format!("{}/TODO", &home);
+                let legacy_todo = format!("{}/TODO", &path);
                 match Path::new(&legacy_todo).exists() {
                     true => legacy_todo,
-                    false => format!("{}/.todo", &home),
+                    false => format!("{}/.todo", &path),
                 }
             }
         };
+        todo_path = shellexpand::tilde(&todo_path).into();
 
         let todo_bak: String = match env::var("TODO_BAK_DIR") {
             Ok(t) => t,
@@ -323,7 +325,7 @@ impl Todo {
 }
 
 const TODO_HELP: &str = "Usage: todo [COMMAND] [ARGUMENTS]
-Todo is a fast and simple tasks organizer written in rust
+todo is a tasks organizer
 Example: todo list
 Available commands:
     - add [TASK]
@@ -343,7 +345,7 @@ Available commands:
         Example: todo rm 2 3
     - reset
         deletes all tasks
-    - restore 
+    - restore
         restore recent backup after reset
     - sort
         sorts completed and uncompleted tasks
