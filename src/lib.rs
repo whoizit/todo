@@ -311,7 +311,7 @@ impl Todo {
         let mut buffer = BufWriter::new(todofile);
 
         for (pos, line) in self.todo.iter().enumerate() {
-            let line = if args[0].contains(&(pos + 1).to_string()) {
+            let line = if args[0] == (pos + 1).to_string() {
                 let mut entry = Entry::read_line(line);
                 entry.todo_entry = args[1].clone();
                 entry.file_line()
