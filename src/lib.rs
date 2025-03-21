@@ -165,18 +165,15 @@ impl Todo {
             .expect("Couldn't open the todofile");
 
         let mut buffer = BufWriter::new(todofile);
-        for arg in args {
-            if arg.trim().is_empty() {
-                continue;
-            }
 
-            // Appends a new task/s to the file
-            let entry = Entry::new(arg.to_string(), false);
-            let line = entry.file_line();
-            buffer
-                .write_all(line.as_bytes())
-                .expect("unable to write data");
-        }
+        let msg = args.join(" ");
+
+        // Appends a new task/s to the file
+        let entry = Entry::new(msg.into(), false);
+        let line = entry.file_line();
+        buffer
+            .write_all(line.as_bytes())
+            .expect("unable to write data");
     }
 
     // Removes a task
@@ -326,24 +323,24 @@ impl Todo {
 }
 
 const TODO_HELP: &str = "Usage: todo [COMMAND] [ARGUMENTS]
-Todo is a super fast and simple tasks organizer written in rust
+Todo is a fast and simple tasks organizer written in rust
 Example: todo list
 Available commands:
-    - add [TASK/s]
-        adds new task/s
-        Example: todo add \"buy carrots\"
-    - edit [INDEX] [EDITED TASK/s]
-        edits an existing task/s
+    - add [TASK]
+        adds new task
+        Example: todo add buy carrots
+    - edit [INDEX] [EDITED TASK]
+        edits an existing task
         Example: todo edit 1 banana
     - list
         lists all tasks
         Example: todo list
-    - done [INDEX]
-        marks task as done
+    - done [INDEX/s]
+        marks tasks as done
         Example: todo done 2 3 (marks second and third tasks as completed)
-    - rm [INDEX]
-        removes a task
-        Example: todo rm 4
+    - rm [INDEX/s]
+        removes a tasks
+        Example: todo rm 2 3
     - reset
         deletes all tasks
     - restore 
