@@ -4,7 +4,7 @@ A cli todo program written in Rust
 
 ## installation
 
-use `cargo install --path .` to compile todo and copy `target/release/todo` to `~/.cargo/bin`
+use `cargo install --git https://github.com/whoizit/todo` to compile todo and copy `target/release/todo` to `~/.cargo/bin`
 
 ## usage
 
