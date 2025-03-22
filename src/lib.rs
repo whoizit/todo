@@ -33,7 +33,7 @@ impl Entry {
             // If the task is not completed yet, then it will print it as it is
             self.todo_entry.clone()
         };
-        format!("{number} {todo_entry}\n")
+        format!("{number:>2} {todo_entry}\n")
     }
 
     pub fn read_line(line: &String) -> Self {
