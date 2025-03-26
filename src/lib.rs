@@ -5,6 +5,7 @@ use std::fs::OpenOptions;
 use std::io::prelude::Read;
 use std::io::{self, BufReader, BufWriter, Write};
 use std::path::Path;
+use std::process::exit;
 use std::{env, process};
 
 pub struct Entry {
@@ -77,6 +78,11 @@ impl Todo {
         };
 
         let no_backup = env::var("TODO_NOBACKUP").is_ok();
+
+        if !Path::new(&todo_path).exists() {
+            eprintln!(".todo file not found, try `touch .todo` first");
+            exit(0);
+        };
 
         let todofile = OpenOptions::new()
             .write(true)
